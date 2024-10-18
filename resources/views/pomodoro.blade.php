@@ -15,24 +15,25 @@
                     <label for="duration" class="block mb-2">Durata (in minuti):</label>
                     <input id="duration" type="number" min="1" value="25" class="mb-4 p-2 border rounded w-20 text-center">
 
-                    <form action="{{ route('save-pomodoro') }}" method="POST">
+                    
+                    <!-- Timer display -->
+                    <div id="timer" class="text-4xl mb-4">25:00</div>
+                    
+                    <!-- Pulsanti di controllo -->
+                    <button id="start" class="py-2 px-4 rounded hover:bg-green-600 transition">Inizia</button>
+                    <button id="pause" class="py-2 px-4 rounded hover:bg-blue-600 transition">Pausa</button>
+                    <button id="reset" class="py-2 px-4 rounded hover:bg-yellow-600 transition">Ripristina</button>
+                    
+                    <!-- Allerta alla fine del timer 
+                    <audio id="alarm" src="/path/to/sound.mp3"></audio>-->
+
+                    <form action="{{ route('pomodoro.store') }}" method="POST">
                         @csrf
                         <label for="duration">Durata (in minuti):</label>
                         <input type="number" id="duration" name="duration" min="1" required>
                         
                         <button type="submit">Salva</button>
                     </form>
-
-                    <!-- Timer display -->
-                    <div id="timer" class="text-4xl mb-4">25:00</div>
-
-                    <!-- Pulsanti di controllo -->
-                    <button id="start" class="py-2 px-4 rounded hover:bg-green-600 transition">Inizia</button>
-                    <button id="pause" class="py-2 px-4 rounded hover:bg-blue-600 transition">Pausa</button>
-                    <button id="reset" class="py-2 px-4 rounded hover:bg-yellow-600 transition">Ripristina</button>
-
-                    <!-- Allerta alla fine del timer -->
-                    <audio id="alarm" src="/path/to/sound.mp3"></audio>
                 </div>
             </div>
         </div>
@@ -119,7 +120,7 @@ function startTimer() {
 
 function savePomodoro(duration) {
     alert("dentro fun save pomodoro!"); // Mostra l'alert
-    fetch('/save-pomodoro', {
+    fetch('/pomodoro.store', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
