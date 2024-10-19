@@ -85,11 +85,13 @@
                             @csrf
                             <div class="mb-4">
                                 <label for="subject" class="block text-sm font-medium text-gray-700">Materia</label>
-                                <input type="text" id="subject" name="subject" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <input type="text" id="subject" name="subject" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" onfocus="suggestSubjects()" oninput="suggestSubjects()">
+                                <div id="subject-suggestions" class="absolute bg-white border border-gray-300 mt-1 rounded-md hidden"></div>
                             </div>
                             <div class="mb-4">
                                 <label for="topic" class="block text-sm font-medium text-gray-700">Argomento</label>
-                                <input type="text" id="topic" name="topic" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                <input type="text" id="topic" name="topic" class="mt-1 block w-full border-gray-300 rounded-md" onfocus="suggestTopics()" oninput="suggestTopics()">
+                                <div id="topic-suggestions" class="absolute bg-white border border-gray-300 mt-1 rounded-md hidden"></div>
                             </div>
                             <div class="mb-4">
                                 <label for="question" class="block text-sm font-medium text-gray-700">Domanda</label>
@@ -150,6 +152,73 @@
                 document.getElementById('prev-btn').disabled = currentIndex === 0;
                 document.getElementById('next-btn').disabled = currentIndex === flashcards.length - 1;
             }
+
+            let subjects = @json($subjects); // Materie esistenti
+            let topics = @json($topics); // Argomenti esistenti
+
+            function suggestSubjects() {
+                const input = document.getElementById('subject').value.toLowerCase();
+                const suggestionsContainer = document.getElementById('subject-suggestions');
+                suggestionsContainer.innerHTML = ''; // Pulisci i suggerimenti precedenti
+                suggestionsContainer.classList.add('hidden'); // Nascondi inizialmente
+
+                if (input) {
+                    const filteredSubjects = subjects.filter(subject => subject.toLowerCase().includes(input));
+                    
+                    if (filteredSubjects.length) {
+                        suggestionsContainer.classList.remove('hidden'); // Mostra i suggerimenti
+                        filteredSubjects.forEach(subject => {
+                            const div = document.createElement('div');
+                            div.textContent = subject;
+                            div.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-200');
+                            div.onclick = () => {
+                                document.getElementById('subject').value = subject; // Imposta il valore dell'input
+                                suggestionsContainer.classList.add('hidden'); // Nascondi i suggerimenti
+                            };
+                            suggestionsContainer.appendChild(div);
+                        });
+                    }
+                }
+            }
+
+            function suggestTopics() {
+                const input = document.getElementById('topic').value.toLowerCase();
+                const suggestionsContainer = document.getElementById('topic-suggestions');
+                suggestionsContainer.innerHTML = ''; // Pulisci i suggerimenti precedenti
+                suggestionsContainer.classList.add('hidden'); // Nascondi inizialmente
+
+                if (input) {
+                    const filteredTopics = topics.filter(topic => topic.toLowerCase().includes(input));
+                    
+                    if (filteredTopics.length) {
+                        suggestionsContainer.classList.remove('hidden'); // Mostra i suggerimenti
+                        filteredTopics.forEach(topic => {
+                            const div = document.createElement('div');
+                            div.textContent = topic;
+                            div.classList.add('cursor-pointer', 'p-2', 'hover:bg-gray-200');
+                            div.onclick = () => {
+                                document.getElementById('topic').value = topic; // Imposta il valore dell'input
+                                suggestionsContainer.classList.add('hidden'); // Nascondi i suggerimenti
+                            };
+                            suggestionsContainer.appendChild(div);
+                        });
+                    }
+                }
+            }
+
+
+            function selectSubject(subject) {
+                document.getElementById('subject').value = subject;
+                document.getElementById('subject-suggestions').innerHTML = '';
+                document.getElementById('subject-suggestions').classList.add('hidden');
+            }
+
+            function selectTopic(topic) {
+                document.getElementById('topic').value = topic;
+                document.getElementById('topic-suggestions').innerHTML = '';
+                document.getElementById('topic-suggestions').classList.add('hidden');
+            }
+
         </script>
     @endif
 
