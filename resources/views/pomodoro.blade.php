@@ -12,7 +12,7 @@
                     <h1 class="text-2xl mb-4">Pomodoro Timer</h1>
 
                     <!-- Input per impostare la durata del timer -->
-                    <label for="duration" class="block mb-2">Durata (in minuti):</label>
+                    <label for="duration" class="block mb-2">Minutes:</label>
                     <input id="duration" type="number" min="1" value="25" class="mb-4 p-2 border rounded w-20 text-center">
 
                     
@@ -20,19 +20,19 @@
                     <div id="timer" class="text-4xl mb-4">25:00</div>
                     
                     <!-- Pulsanti di controllo -->
-                    <button id="start" class="py-2 px-4 rounded hover:bg-green-600 transition">Inizia</button>
-                    <button id="pause" class="py-2 px-4 rounded hover:bg-blue-600 transition">Pausa</button>
-                    <button id="reset" class="py-2 px-4 rounded hover:bg-yellow-600 transition">Ripristina</button>
+                    <button id="start" class="py-2 px-4 rounded hover:bg-green-600 transition">Start</button>
+                    <button id="pause" class="py-2 px-4 rounded hover:bg-blue-600 transition">Pause</button>
+                    <button id="reset" class="py-2 px-4 rounded hover:bg-yellow-600 transition">Restore</button>
                     
                     <!-- Allerta alla fine del timer 
                     <audio id="alarm" src="/path/to/sound.mp3"></audio>-->
 
                     <form action="{{ route('pomodoro.store') }}" method="POST">
                         @csrf
-                        <label for="duration">Durata (in minuti):</label>
+                        <label for="duration">Minutes:</label>
                         <input type="number" id="duration" name="duration" min="1" required>
                         
-                        <button type="submit">Salva</button>
+                        <button type="submit">Save</button>
                     </form>
                 </div>
             </div>
@@ -42,16 +42,16 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h2 class="text-xl mb-4">Pomodori Completati</h2>
+                    <h2 class="text-xl mb-4">Completed Pomodoros</h2>
 
                     @if ($pomodoros->isEmpty())
-                        <p>Non hai completato nessun pomodoro.</p>
+                        <p>You haven't completed any pomodoros yet</p>
                     @else
                         <table class="min-w-full bg-white">
                             <thead>
                                 <tr>
-                                    <th class="py-2">Durata (minuti)</th>
-                                    <th class="py-2">Completato il</th>
+                                    <th class="py-2">Minutes</th>
+                                    <th class="py-2">Completed on</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,7 +105,7 @@ function startTimer() {
                 isRunning = false;
                 completedPomodoros++;
                 
-                alert("Tempo scaduto!"); // Mostra l'alert
+                alert("Time over!"); // Mostra l'alert
 
                 // Salva il Pomodoro nel database
                 savePomodoro(document.getElementById('duration').value);
@@ -119,7 +119,6 @@ function startTimer() {
 }
 
 function savePomodoro(duration) {
-    alert("dentro fun save pomodoro!"); // Mostra l'alert
     fetch('/pomodoro.store', {
         method: 'POST',
         headers: {

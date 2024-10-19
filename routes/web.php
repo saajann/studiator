@@ -27,6 +27,8 @@ Route::get('/flashcards', [FlashcardController::class, 'index'])->middleware(['a
 
 Route::post('/flashcards', [FlashcardController::class, 'store'])->name('flashcards.store');
 
+Route::delete('/flashcards/{id}', [FlashcardController::class, 'destroy'])->name('flashcards.destroy');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
